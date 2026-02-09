@@ -1,0 +1,43 @@
+services:
+  # BDD config
+  db:
+    image: postgres:16
+    container_name: chatbot_db
+    environment:
+      POSTGRES_DB: chatbot_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # Keycloak config
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.0
+    container_name: chatbot_keycloak
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db:5432/chatbot_db
+      KC_DB_USERNAME: user
+      KC_DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  # Local AI config
+  ollama:
+    image: ollama/ollama:latest
+    container_name: chatbot_ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+
+volumes:
+  postgres_data:
+  ollama_data:
