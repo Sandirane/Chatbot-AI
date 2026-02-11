@@ -1,0 +1,17 @@
+@if (!isLoggedIn()) {
+  <button (click)="login()">Se connecter</button>
+} @else {
+  <ul>
+    @for (action of actions; track action) {
+      <li>
+        <button [routerLink]="action.route">
+          {{ action.title }}
+        </button>
+      </li>
+    }
+    <li>
+      <p>Bonjour {{ username() }} !</p>
+      <button (click)="logout()">Se déconnecter</button>
+    </li>
+  </ul>
+}
