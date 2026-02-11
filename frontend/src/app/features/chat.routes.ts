@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Chat } from './pages/private/chat/chat';
+import { Chat } from './private/pages/chat/chat';
 
 export const CHAT_ROUTES: Routes = [
   {

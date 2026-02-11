@@ -4,7 +4,7 @@ import { authGuard } from '@core/auth-guard';
 export const routes: Routes = [
   {
     path: 'home',
-    loadComponent: () => import('./features/pages/public/home/home').then((m) => m.Home),
+    loadComponent: () => import('./features/public/pages/home/home').then((m) => m.Home),
   },
   {
     path: 'chat',
@@ -14,7 +14,7 @@ export const routes: Routes = [
   {
     path: 'notauthorized',
     loadComponent: () =>
-      import('./features/pages/public/notauthorized/notauthorized').then((m) => m.Notauthorized),
+      import('./features/public/pages/notauthorized/notauthorized').then((m) => m.Notauthorized),
   },
   {
     path: '',
@@ -24,6 +24,6 @@ export const routes: Routes = [
   {
     path: '**',
     loadComponent: () =>
-      import('./features/pages/public/pagenotfound/pagenotfound').then((m) => m.Pagenotfound),
+      import('./features/public/pages/pagenotfound/pagenotfound').then((m) => m.Pagenotfound),
   },
 ];

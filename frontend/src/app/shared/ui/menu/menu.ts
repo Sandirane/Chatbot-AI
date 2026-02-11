@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 
 interface Action {
@@ -21,7 +21,6 @@ export class Menu implements OnInit {
     { title: 'Chat', route: 'chat' },
   ];
 
-  private router = inject(Router);
   private keycloak = inject(KeycloakService);
 
   async ngOnInit() {
@@ -40,4 +39,5 @@ export class Menu implements OnInit {
   logout() {
     this.keycloak.logout(window.location.origin);
   }
+  
 }
