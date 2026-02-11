@@ -1,1 +1,34 @@
-<p>chat works!</p>
+<div class="chat-layout">
+  <aside class="sidebar">
+    <div class="history">
+      <h3>Conversations</h3>
+    </div>
+  </aside>
+
+  <main class="chat-area">
+    <div class="messages-container">
+      @for (msg of chatService.messages(); track msg.id) {
+        <div [class]="'message ' + msg.role">
+          <p>{{ msg.content }}</p>
+        </div>
+      } @empty {
+        <p class="empty-state">Aucun message pour le moment.</p>
+      }
+
+      @if (chatService.isLoading()) {
+        <div class="loading">L'IA réfléchit...</div>
+      }
+    </div>
+
+    <div class="input-area">
+      <input
+        [ngModel]="userInput()"
+        (ngModelChange)="userInput.set($event)"
+        (keyup.enter)="sendMessage()"
+        placeholder="Posez votre question..."
+        [disabled]="chatService.isLoading()"
+      />
+      <button (click)="sendMessage()" [disabled]="chatService.isLoading()">Envoyer</button>
+    </div>
+  </main>
+</div>
