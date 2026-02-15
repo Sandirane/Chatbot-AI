@@ -10,7 +10,7 @@ export const getKeycloak = () => {
     "ssl-required": "external",
     resource: process.env.KEYCLOAK_CLIENT_ID!,
     "bearer-only": true,
-    // "secret": process.env.KEYCLOAK_CLIENT_SECRET // <--- ENLÈVE CETTE LIGNE
+    // "secret": process.env.KEYCLOAK_CLIENT_SECRET
   } as any);
 };
 

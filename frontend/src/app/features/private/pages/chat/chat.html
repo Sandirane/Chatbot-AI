@@ -1,7 +1,24 @@
 <div class="chat-layout">
   <aside class="sidebar">
+    <div class="sidebar-header">
+      <button (click)="chatService.clearChat()" class="new-chat-btn">+ Nouveau Chat</button>
+    </div>
     <div class="history">
       <h3>Conversations</h3>
+      <div class="conv-list">
+        @for (conv of chatService.conversations(); track conv.id) {
+          <div
+            class="conv-item"
+            [class.active]="chatService.currentConversationId() === conv.id"
+            (click)="chatService.loadMessages(conv.id)"
+          >
+            <span class="icon">💬</span>
+            <span class="title">{{ conv.title || 'Discussion sans titre' }}</span>
+          </div>
+        } @empty {
+          <p class="no-conv">Aucun historique</p>
+        }
+      </div>
     </div>
   </aside>
 

@@ -1,20 +1,28 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '@config/environment.development';
-import { ChatResponse } from '@core/models/chat-response';
-import { Message } from '@core/models/message';
+import { ChatResponse } from '@core/models/chat/chat-response';
+import { Message } from '@core/models/chat/message';
 import { finalize } from 'rxjs';
+
+export interface Conversation {
+  id: string;
+  title: string;
+  createdAt: string;
+  _count?: { messages: number };
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  private readonly http = inject(HttpClient);
-  private readonly apiUrl = `${environment.apiUrl}/chat`;
+  private http = inject(HttpClient);
+  private apiUrl = `${environment.apiUrl}/chat`;
+  conversations = signal<Conversation[]>([]);
 
-  readonly messages = signal<Message[]>([]);
-  readonly isLoading = signal<boolean>(false);
-  readonly currentConversationId = signal<string | null>(null);
+  messages = signal<Message[]>([]);
+  isLoading = signal<boolean>(false);
+  currentConversationId = signal<string | null>(null);
 
   sendMessage(content: string) {
     const tempUserMsg: Message = {
@@ -48,8 +56,27 @@ export class ChatService {
       });
   }
 
+  loadConversations() {
+    this.http
+      .get<Conversation[]>(`${environment.apiUrl}/chat/conversations`)
+      .subscribe((data) => this.conversations.set(data));
+  }
+ 
+  loadMessages(conversationId: string) {
+    this.isLoading.set(true);
+    this.currentConversationId.set(conversationId);
+
+    this.http
+      .get<any>(`${environment.apiUrl}/chat/conversations/${conversationId}`)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe((data) => {
+        this.messages.set(data.messages);  
+      });
+  }
+
   clearChat() {
     this.messages.set([]);
     this.currentConversationId.set(null);
   }
+  
 }
