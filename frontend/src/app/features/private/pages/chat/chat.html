@@ -1,1 +1,50 @@
-<p>chat works!</p>
+<div class="chat-layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <button (click)="chatService.clearChat()" class="new-chat-btn">+ Nouveau Chat</button>
+    </div>
+    <div class="history">
+      <h3>Conversations</h3>
+      <div class="conv-list">
+        @for (conv of chatService.conversations(); track conv.id) {
+          <div
+            class="conv-item"
+            [class.active]="chatService.currentConversationId() === conv.id"
+            (click)="chatService.loadMessages(conv.id)"
+          >
+            <span class="icon">💬</span>
+            <span class="title">{{ conv.title || 'Discussion sans titre' }}</span>
+          </div>
+        } @empty {
+          <p class="no-conv">Aucun historique</p>
+        }
+      </div>
+    </div>
+  </aside>
+
+  <main class="chat-area">
+    @if (chatService.isLoading()) {
+      <div class="loading">L'IA réfléchit...</div>
+    }
+    <div class="messages-container">
+      @for (msg of chatService.messages(); track msg.id) {
+        <div [class]="'message ' + msg.role">
+          <markdown [data]="msg.content"></markdown>
+        </div>
+      } @empty {
+        <p class="empty-state">Aucun message pour le moment.</p>
+      }
+    </div>
+
+    <div class="input-area">
+      <input
+        [ngModel]="userInput()"
+        (ngModelChange)="userInput.set($event)"
+        (keyup.enter)="sendMessage()"
+        placeholder="Posez votre question..."
+        [disabled]="chatService.isLoading()"
+      />
+      <button (click)="sendMessage()" [disabled]="chatService.isLoading()">Envoyer</button>
+    </div>
+  </main>
+</div>

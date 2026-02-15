@@ -2,10 +2,11 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 
-interface Action {
+export interface MenuAction {
   title: string;
   route: string;
 }
+
 @Component({
   selector: 'app-menu',
   imports: [RouterLink],
@@ -16,7 +17,7 @@ export class Menu implements OnInit {
   isLoggedIn = signal(false);
   username = signal('');
 
-  actions: Array<Action> = [
+  actions: Array<MenuAction> = [
     { title: 'Home', route: '/home' },
     { title: 'Chat', route: 'chat' },
   ];
@@ -39,5 +40,4 @@ export class Menu implements OnInit {
   logout() {
     this.keycloak.logout(window.location.origin);
   }
-  
 }
