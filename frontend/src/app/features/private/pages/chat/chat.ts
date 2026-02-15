@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '@core/services/chat/chat.service';
+import { MarkdownComponent } from "ngx-markdown";
 
 @Component({
   selector: 'app-chat',
-  imports: [FormsModule],
+  imports: [FormsModule, MarkdownComponent],
   templateUrl: './chat.html',
   styleUrl: './chat.scss',
 })

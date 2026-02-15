@@ -23,17 +23,16 @@
   </aside>
 
   <main class="chat-area">
+    @if (chatService.isLoading()) {
+      <div class="loading">L'IA réfléchit...</div>
+    }
     <div class="messages-container">
       @for (msg of chatService.messages(); track msg.id) {
         <div [class]="'message ' + msg.role">
-          <p>{{ msg.content }}</p>
+          <markdown [data]="msg.content"></markdown>
         </div>
       } @empty {
         <p class="empty-state">Aucun message pour le moment.</p>
-      }
-
-      @if (chatService.isLoading()) {
-        <div class="loading">L'IA réfléchit...</div>
       }
     </div>
 

@@ -10,6 +10,7 @@ import { provideRouter } from '@angular/router';
 import { environment } from '@config/environment.development';
 import { KeycloakService, KeycloakBearerInterceptor } from 'keycloak-angular';
 import { routes } from '../app.routes';
+import { provideMarkdown } from 'ngx-markdown';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -44,4 +45,5 @@ export const coreProviders: (Provider | EnvironmentProviders)[] = [
     multi: true,
     deps: [KeycloakService],
   },
+  provideMarkdown(),
 ];
