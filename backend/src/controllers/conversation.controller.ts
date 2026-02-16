@@ -87,3 +87,31 @@ export const getConversationById = async (
     return res.status(500).json({ error: "Erreur serveur" });
   }
 };
+
+export const deleteConversation = async (
+  req: AuthenticatedRequest<{ id: string }>,
+  res: Response,
+) => {
+  try {
+    const { id } = req.params;
+    const userId = req.kauth?.grant?.access_token?.content?.sub;
+
+    if (!userId) return res.status(401).json({ error: "Non autorisé" });
+
+    const deleteResult = await prisma.conversation.deleteMany({
+      where: {
+        id: id,
+        userId: userId,
+      },
+    });
+
+    if (deleteResult.count === 0) {
+      return res.status(404).json({ error: "Conversation non trouvée" });
+    }
+
+    return res.status(204).send();
+  } catch (error) {
+    console.error("DeleteConversation Error:", error);
+    return res.status(500).json({ error: "Erreur lors de la suppression" });
+  }
+};
