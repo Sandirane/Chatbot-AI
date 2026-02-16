@@ -7,13 +7,17 @@
       <h3>Conversations</h3>
       <div class="conv-list">
         @for (conv of chatService.conversations(); track conv.id) {
-          <div
-            class="conv-item"
-            [class.active]="chatService.currentConversationId() === conv.id"
-            (click)="chatService.loadMessages(conv.id)"
-          >
-            <span class="icon">💬</span>
-            <span class="title">{{ conv.title || 'Discussion sans titre' }}</span>
+          <div class="conv-item" [class.active]="chatService.currentConversationId() === conv.id">
+            <div (click)="chatService.loadMessages(conv.id)" class="conv-info">
+              <span class="icon">💬</span>
+              <span class="title">{{ conv.title || 'Discussion sans titre' }}</span>
+            </div>
+            <button
+              class="delete-btn"
+              (click)="$event.stopPropagation(); chatService.deleteConversation(conv.id)"
+            >
+              🗑️
+            </button>
           </div>
         } @empty {
           <p class="no-conv">Aucun historique</p>

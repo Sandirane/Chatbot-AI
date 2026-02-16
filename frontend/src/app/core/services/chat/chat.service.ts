@@ -61,7 +61,7 @@ export class ChatService {
       .get<Conversation[]>(`${environment.apiUrl}/chat/conversations`)
       .subscribe((data) => this.conversations.set(data));
   }
- 
+
   loadMessages(conversationId: string) {
     this.isLoading.set(true);
     this.currentConversationId.set(conversationId);
@@ -70,13 +70,25 @@ export class ChatService {
       .get<any>(`${environment.apiUrl}/chat/conversations/${conversationId}`)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe((data) => {
-        this.messages.set(data.messages);  
+        this.messages.set(data.messages);
       });
+  }
+
+  deleteConversation(id: string) {
+    this.http.delete(`${environment.apiUrl}/chat/conversations/${id}`).subscribe({
+      next: () => {
+        this.conversations.update((list) => list.filter((c) => c.id !== id));
+
+        if (this.currentConversationId() === id) {
+          this.clearChat();
+        }
+      },
+      error: (err) => console.error('Erreur suppression:', err),
+    });
   }
 
   clearChat() {
     this.messages.set([]);
     this.currentConversationId.set(null);
   }
-  
 }
