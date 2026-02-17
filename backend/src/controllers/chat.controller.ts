@@ -4,7 +4,7 @@ import * as ChatService from "../services/chat.service.js";
 
 interface ChatRequestBody {
   message: string;
-  conversationId?: string;
+  conversationId?: string | null;
 }
 
 interface AuthenticatedRequest extends Request<
@@ -30,7 +30,10 @@ export const handleChat = async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.kauth?.grant?.access_token?.content?.sub;
 
     if (!userId) {
-      console.error("handleChat DEBUG: kauth structure:", JSON.stringify(req.kauth)); 
+      console.error(
+        "handleChat DEBUG: kauth structure:",
+        JSON.stringify(req.kauth),
+      );
       return res.status(401).json({ error: "Utilisateur non authentifié" });
     }
 
