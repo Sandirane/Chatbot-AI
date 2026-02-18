@@ -24,8 +24,8 @@ export class Menu implements OnInit {
   }
 
   actions: Array<MenuAction> = [
-    { title: 'Home', route: '/home' },
-    { title: 'Chat', route: 'chat' },
+    { title: 'Acceuil', route: '/home' },
+    { title: 'Conversation', route: 'chat' },
   ];
 
   private keycloak = inject(KeycloakService);

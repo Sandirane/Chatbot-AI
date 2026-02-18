@@ -27,24 +27,22 @@ The application allows authenticated users to interact with an AI chatbot, manag
 
 # Dockerized Environment
 - Keycloak and PostgreSQL run via Docker Compose
-
----
-
+ 
 # Tech Stack
----
+ 
 # Backend
 - Node.js / Express.js
 - Prisma ORM
 - PostgreSQL
----
+ 
 # Frontend
 - Angular 21
 - Bootstrap 5
----
+ 
 # Authentication
 - Keycloak
 - JWT
----
+ 
 # Infrastructure
 - Docker
 - Docker Compose
@@ -107,5 +105,5 @@ docker-compose up --build
 
 # Author
 
-Created by Sandirane
-GitHub Profile
+Created by **Sandirane**  
+[GitHub Profile](https://github.com/Sandirane)
