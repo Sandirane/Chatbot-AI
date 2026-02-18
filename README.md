@@ -12,7 +12,7 @@ The application allows authenticated users to interact with an AI chatbot, manag
 
 ## Application Preview
 
-[comming soon] 
+[coming soon] 
 
 # Authentication
 - JWT-based authentication with Keycloak
