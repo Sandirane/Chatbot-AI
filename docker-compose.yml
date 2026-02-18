@@ -1,8 +1,8 @@
 services:
-  # BDD config
   db:
-    image: postgres:16
+    image: postgres:16-alpine
     container_name: chatbot_db
+    restart: always
     environment:
       POSTGRES_DB: chatbot_db
       POSTGRES_USER: ${POSTGRES_USER}
@@ -12,16 +12,17 @@ services:
     ports:
       - "5432:5432"
 
-  # Keycloak config
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.0
     container_name: chatbot_keycloak
-    command: start-dev
+    command: start-dev --import-realm
     environment:
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://db:5432/chatbot_db 
+      KC_DB_URL: jdbc:postgresql://db:5432/chatbot_db
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KC_HOSTNAME_STRICT: "false" 
+      KC_HOSTNAME_URL: http://localhost:8080
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     ports:
@@ -29,7 +30,6 @@ services:
     depends_on:
       - db
 
-  # Local AI config
   ollama:
     image: ollama/ollama:latest
     container_name: chatbot_ollama
@@ -37,6 +37,30 @@ services:
       - ollama_data:/root/.ollama
     ports:
       - "11434:11434"
+
+  backend:
+    build: ./backend
+    container_name: chatbot_backend
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/chatbot_db?schema=app
+      - OLLAMA_URL=http://ollama:11434     
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM:-chatbot-realm}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID:-chatbot-app}
+      - KEYCLOAK_URL=http://keycloak:8080
+    depends_on:
+      - db
+      - keycloak
+      - ollama
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build: ./frontend
+    container_name: chatbot_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:

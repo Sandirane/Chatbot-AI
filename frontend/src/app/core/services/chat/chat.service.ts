@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { environment } from '@config/environment.development';
+import { environment } from '@config/environment';
 import { ChatResponse } from '@core/models/chat/chat-response';
 import { Message } from '@core/models/chat/message';
 import { finalize } from 'rxjs';
@@ -35,12 +35,20 @@ export class ChatService {
     this.messages.update((prev) => [...prev, tempUserMsg]);
     this.isLoading.set(true);
 
+    const conversationId = this.currentConversationId();
+
     this.http
-      .post<ChatResponse>(this.apiUrl, { message: content })
+      .post<ChatResponse>(this.apiUrl, {
+        message: content,
+        conversationId: conversationId,
+      })
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (data) => {
-          this.currentConversationId.set(data.conversationId);
+          if (!conversationId) {
+            this.currentConversationId.set(data.conversationId);
+            this.loadConversations();
+          }
 
           const assistantMsg: Message = {
             id: crypto.randomUUID(),

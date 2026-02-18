@@ -26,6 +26,16 @@ app.use(
     admin: "/",
   }),
 );
+
+app.use((req, res, next) => {
+  console.log(`Requête reçue: ${req.method} ${req.url}`);
+  console.log(
+    "Authorization Header:",
+    req.headers.authorization ? "Présent" : "Absent",
+  );
+  next();
+});
+
 app.use("/api/chat", chatRoutes);
 
 export default app;

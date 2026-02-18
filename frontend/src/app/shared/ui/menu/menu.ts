@@ -17,6 +17,12 @@ export class Menu implements OnInit {
   isLoggedIn = signal(false);
   username = signal('');
 
+  navbarCollapsed = signal(false);
+
+  toggleNavbar(): void {
+    this.navbarCollapsed.update((isCollapsed) => !isCollapsed);
+  }
+
   actions: Array<MenuAction> = [
     { title: 'Home', route: '/home' },
     { title: 'Chat', route: 'chat' },

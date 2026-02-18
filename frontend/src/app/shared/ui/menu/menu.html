@@ -1,17 +1,39 @@
-@if (!isLoggedIn()) {
-  <button (click)="login()">Se connecter</button>
-} @else {
-  <ul>
-    @for (action of actions; track action) {
-      <li>
-        <button [routerLink]="action.route">
-          {{ action.title }}
-        </button>
-      </li>
-    }
-    <li>
-      <p>Bonjour {{ username() }} !</p>
-      <button (click)="logout()">Se déconnecter</button>
-    </li>
-  </ul>
-}
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" (click)="toggleNavbar()">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse collapse" [class.show]="navbarCollapsed()" id="collapsibleNavbar">
+    <div class="container-fluid d-flex flex-row align-items-center">
+      @if (isLoggedIn()) {
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button class="btn btn-success me-1 nav-btn-fixed">Bonjour {{ username() }}</button>
+          </li>
+          @for (action of actions; track action) {
+            <li class="nav-item">
+              <button
+                class="btn btn-outline-primary me-1 nav-btn-fixed"
+                [routerLink]="action.route"
+              >
+                {{ action.title }}
+              </button>
+            </li>
+          }
+        </ul>
+
+        <div class="ms-auto">
+          <button class="btn btn-outline-danger nav-btn-fixed" (click)="logout()">
+            Déconnexion
+          </button>
+        </div>
+      } @else {
+        <div class="ms-auto">
+          <button class="btn btn-outline-success nav-btn-fixed" (click)="login()">
+            Se connecter
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</nav>

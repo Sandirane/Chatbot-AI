@@ -1,0 +1,25 @@
+// Bulles personnalisées
+.custom-bubble-user {
+  max-width: 80%;
+  border-bottom-right-radius: 0 !important;
+}
+
+.custom-bubble-ai {
+  max-width: 85%;
+  border-bottom-left-radius: 0 !important;
+  color: #333;
+}
+
+// Pour ngx-markdown dans les bulles blanches
+.custom-bubble-ai markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+// Effet au survol des items de l'historique
+.list-group-item-action:hover {
+  background-color: rgba(255,255,255, 0.1) !important;
+}

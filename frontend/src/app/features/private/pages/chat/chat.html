@@ -1,54 +1,100 @@
-<div class="chat-layout">
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <button (click)="chatService.clearChat()" class="new-chat-btn">+ Nouveau Chat</button>
-    </div>
-    <div class="history">
-      <h3>Conversations</h3>
-      <div class="conv-list">
-        @for (conv of chatService.conversations(); track conv.id) {
-          <div class="conv-item" [class.active]="chatService.currentConversationId() === conv.id">
-            <div (click)="chatService.loadMessages(conv.id)" class="conv-info">
-              <span class="icon">💬</span>
-              <span class="title">{{ conv.title || 'Discussion sans titre' }}</span>
-            </div>
-            <button
-              class="delete-btn"
-              (click)="$event.stopPropagation(); chatService.deleteConversation(conv.id)"
-            >
-              🗑️
-            </button>
-          </div>
-        } @empty {
-          <p class="no-conv">Aucun historique</p>
-        }
-      </div>
-    </div>
-  </aside>
+<div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="chatSidebar">
+  <div class="offcanvas-header border-bottom border-secondary">
+    <h5 class="offcanvas-title">Historique</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+  </div>
 
-  <main class="chat-area">
-    @if (chatService.isLoading()) {
-      <div class="loading">L'IA réfléchit...</div>
-    }
-    <div class="messages-container">
-      @for (msg of chatService.messages(); track msg.id) {
-        <div [class]="'message ' + msg.role">
-          <markdown [data]="msg.content"></markdown>
+  <div class="offcanvas-body d-flex flex-column">
+    <button
+      (click)="chatService.clearChat()"
+      class="btn btn-outline-light w-100 mb-4"
+      data-bs-dismiss="offcanvas"
+    >
+      <i class="bi bi-plus-lg me-2"></i>
+      Nouveau Chat
+    </button>
+
+    <div class="list-group list-group-flush flex-grow-1 overflow-auto">
+      @for (conv of chatService.conversations(); track conv.id) {
+        <div
+          class="list-group-item list-group-item-action bg-transparent text-white border-0 d-flex align-items-center justify-content-between p-2 rounded mb-1"
+          [class.active]="chatService.currentConversationId() === conv.id"
+        >
+          <div
+            (click)="chatService.loadMessages(conv.id)"
+            class="text-truncate cursor-pointer flex-grow-1"
+            data-bs-dismiss="offcanvas"
+          >
+            <i class="bi bi-chat-left-text me-2"></i>
+            {{ conv.title || 'Discussion' }}
+          </div>
+
+          <button
+            class="btn btn-link text-danger p-0 ms-2"
+            (click)="$event.stopPropagation(); chatService.deleteConversation(conv.id)"
+          >
+            <i class="bi bi-trash3"></i>
+          </button>
         </div>
       } @empty {
-        <p class="empty-state">Aucun message pour le moment.</p>
+        <p class="text-secondary small text-center">Aucun historique</p>
       }
     </div>
+  </div>
+</div>
 
-    <div class="input-area">
-      <input
-        [ngModel]="userInput()"
-        (ngModelChange)="userInput.set($event)"
-        (keyup.enter)="sendMessage()"
-        placeholder="Posez votre question..."
-        [disabled]="chatService.isLoading()"
-      />
-      <button (click)="sendMessage()" [disabled]="chatService.isLoading()">Envoyer</button>
+<div class="d-flex flex-column h-100 bg-light">
+  <header class="navbar navbar-light bg-white border-bottom px-3 shadow-sm">
+    <button
+      class="btn btn-outline-primary"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#chatSidebar"
+    >
+      <i class="bi bi-layout-sidebar-inset"></i>
+    </button>
+    <span class="navbar-brand mb-0 h1 ms-2">Mon IA Chat</span>
+  </header>
+
+  <main class="flex-grow-1 overflow-auto p-3 p-md-4">
+    <div class="container-md">
+      @for (msg of chatService.messages(); track msg.id) {
+        <div class="d-flex mb-4" [class.justify-content-end]="msg.role === 'user'">
+          <div
+            [class]="msg.role === 'user' ? 'bg-primary text-white' : 'bg-white border'"
+            class="p-3 shadow-sm rounded"
+          >
+            <markdown [data]="msg.content"></markdown>
+          </div>
+        </div>
+      }
+
+      @if (chatService.isLoading()) {
+        <app-spinner />
+      }
     </div>
   </main>
+
+  <footer class="bg-white border-top p-3 p-md-4">
+    <div class="container-md">
+      <div class="input-group shadow-sm">
+        <input
+          type="text"
+          class="form-control"
+          [ngModel]="userInput()"
+          (ngModelChange)="userInput.set($event)"
+          (keyup.enter)="sendMessage()"
+          placeholder="Posez votre question..."
+          [disabled]="chatService.isLoading()"
+        />
+        <button
+          class="btn btn-primary px-4"
+          (click)="sendMessage()"
+          [disabled]="chatService.isLoading()"
+        >
+          <i class="bi bi-send-fill"></i>
+        </button>
+      </div>
+    </div>
+  </footer>
 </div>
