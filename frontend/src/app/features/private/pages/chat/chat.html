@@ -10,7 +10,8 @@
       class="btn btn-outline-light w-100 mb-4"
       data-bs-dismiss="offcanvas"
     >
-      <i class="bi bi-plus-lg me-2"></i> Nouveau Chat
+      <i class="bi bi-plus-lg me-2"></i>
+      Nouveau Chat
     </button>
 
     <div class="list-group list-group-flush flex-grow-1 overflow-auto">
@@ -69,12 +70,7 @@
       }
 
       @if (chatService.isLoading()) {
-        <div class="d-flex mb-4">
-          <div class="bg-white border rounded p-3 shadow-sm">
-            <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
-            <span class="ms-2 text-muted small">L'IA réfléchit...</span>
-          </div>
-        </div>
+        <app-spinner />
       }
     </div>
   </main>
@@ -101,5 +97,4 @@
       </div>
     </div>
   </footer>
- 
 </div>
