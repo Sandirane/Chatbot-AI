@@ -1,11 +1,10 @@
 <div class="d-flex flex-column vh-100">
   <app-menu />
 
-  <main class="flex-grow-1 overflow-hidden d-flex flex-column">
+  <main class="flex-grow-1 overflow-hidden">
     <router-outlet />
   </main>
-
-  <footer class="p-2 text-white bg-dark text-center">
-    <small>2026 Chatbot-AI</small>
-  </footer>
+  @if (!['/chat'].includes(router.url)) {
+    <app-footer />
+  }
 </div>

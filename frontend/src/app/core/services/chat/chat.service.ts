@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { environment } from '@config/environment.development';
+import { environment } from '@config/environment';
 import { ChatResponse } from '@core/models/chat/chat-response';
 import { Message } from '@core/models/chat/message';
 import { finalize } from 'rxjs';
