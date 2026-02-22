@@ -12,7 +12,29 @@ The application allows authenticated users to interact with an AI chatbot, manag
 
 ## Application Preview
 
-[coming soon] 
+Here are some screenshots of the Chatbot-AI MVP in action:
+
+### Login with Keycloak
+![Login Screen](./docs/images/login.png)
+
+### Home
+![Home page user not connected](./docs/images/home_page.png)
+
+### User Home
+![Home page user connected](./docs/images/home_page_connect.png)
+
+### Chat
+![Chat page](./docs/images/chat_page.png)
+
+### Chat history
+![Chat history](./docs/images/chat_history.png)
+
+### Chat with Mistral 
+
+![Chat user](./docs/images/chat_ex1.png)
+
+![Chat Minimal](./docs/images/chat_ex2.png)
+
 
 # Authentication
 - JWT-based authentication with Keycloak
@@ -51,7 +73,6 @@ The application allows authenticated users to interact with an AI chatbot, manag
 
 # Architecture Overview
 
-The project follows a clean modular structure:
 ```txt
 Chatbot-AI/
 ├── backend/
@@ -62,11 +83,12 @@ Chatbot-AI/
 │   ├── services/
 │   └── validators/
 │
-├── frontend/
-│   └── src/app/
-│       ├── core/
-│       ├── feature/
-│       └── shared/
+└── frontend/
+    └── src/
+         └──app/
+           ├── core/
+           ├── feature/
+           └── shared/
 
 ```
 
