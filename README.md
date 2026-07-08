@@ -8,6 +8,14 @@ The application allows authenticated users to interact with an AI chatbot, manag
 
 ---
 
+# Demo Video
+
+🎥 Full application demonstration:
+
+[Watch the demo on YouTube](https://youtu.be/13nnK8rFUvw)
+
+---
+
 # Features
 
 ## Application Preview
